@@ -1,0 +1,112 @@
+/**
+* This function send to tagging according to event
+* @param {element} data of element
+*/
+function addDataLayer(element){
+
+  if(element.dataset.eventpromo === "promotionClick"){
+    addDataLayerPromoClick(element);
+  }
+
+  if(element.dataset.leftmenu){
+    addDataLayerLeftMenu(element);
+  }
+
+  /* add any calls to a new tagging process */
+  if(element.dataset.event === "otro"){
+    //addDataLayerOtro(element);
+  }
+
+}
+
+/**
+* This function applies tagging of the promoClick event
+* @param {element} data of element
+* @recomendation If for some reason the structure of the event to be tagged must change to
+* some specific case use the opn switch function to update said structure
+* DO NOT modify the base structure unless change is required for all cases
+*/
+function addDataLayerPromoClick(element) {
+    try {
+
+      const myEvent = {
+        "event": element.dataset.eventpromo,
+        "ecommerce": {
+          "promoClick": {
+            "promotions": [
+              {
+                "id": element.id,
+                "name": element.name,
+                "creative": element.dataset.creative,
+                "position": element.dataset.position
+              }
+            ]
+          }
+        }
+      };
+
+      switch (element.id) {
+          case 'example1':
+              /* Add new campo */
+              myEvent.ecommerce.promotions.push({
+                "nuevoValor": element.dataset.nuevoValor
+              });
+            break;
+          case 'example2':
+              /* remove campo */
+              delete myEvent.ecommerce.promoClick.promotions[0].position;
+            break;
+          default:
+            break;
+      };
+
+      dataLayer.push(myEvent);
+
+    }catch(error){
+      console.log("addDataLayerPromoClick ", error);
+    }
+
+ };
+
+/**
+* This function applies tagging of the LeftMenu event
+* @param {element} data of element
+* @recomentation If for some reason the structure of the event to be tagged must change to
+* some specific case use the opn switch function to update said structure
+* DO NOT modify the base structure unless change is required for all cases
+*/
+function addDataLayerLeftMenu(element)  {
+    try {
+
+      const myEvent = {
+          "event": element.dataset.leftmenu,
+          "eventCategory":element.dataset.eventcategory,
+          "eventAction":element.dataset.eventaction,
+          "eventLabel":element.dataset.eventlabel,
+          "dimension78":element.dataset.dimension78,
+          "dimension81":element.dataset.dimension81
+        };
+
+
+      switch (element.id) {
+          case 'example1':
+              /* Add new campo */
+              myEvent.ecommerce.promotions.push({
+                "nuevoValor": element.dataset.nuevoValor
+              });
+            break;
+          case 'example2':
+              /* remove campo */
+              delete myEvent.ecommerce.promoClick.promotions[0].position;
+            break;
+          default:
+            break;
+      };
+
+      dataLayer.push(myEvent);
+
+    }catch(error){
+      console.log("addDataLayerPromoClick ", error);
+    }
+
+ };
